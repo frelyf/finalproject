@@ -8,35 +8,46 @@ import json
 import pprint
 import pandas as pd
 
-path_2020 = r"C:\Users\Abder\Desktop\json graduation\all_stations2020.json-1631002853467.json"
-path_2021 = r"C:\Users\Abder\Desktop\json graduation\all_stations2021includingJune.json-1631002941125.json"
+path_2020 = r"C:\Users\Abder\Desktop\json graduation\all_stations2020.json"
+path_2021 = r"C:\Users\Abder\Desktop\json graduation\all_stations2021includingJune.json"
 
 reference_time = []
 sourceid = []
-observations = []
-height_above_ground = []
+observations_crude = []
+observations_clean_elementID_temper = []
+observations_clean_values_temper = []
+observations_clean_elementID_rain = []
+observations_clean_values_rain = []
+
+
 with open(path_2020) as year_2020:
     translated_json_2020 = json.load(year_2020)
-    for i in range(0,13267):
+    for i in range(0,13269):
+        observations_crude.append(translated_json_2020['data'][i]['observations'])
         reference_time.append(translated_json_2020['data'][i]['referenceTime'])
         sourceid.append(translated_json_2020['data'][i]['sourceId'])
-        observations.append(translated_json_2020['data'][i]['observations'][0])
+    for dictionaries in observations_crude:
+        for dictionary in dictionaries:
+            if ((dictionary['elementId'] == 'mean(air_temperature P1D)') and (dictionary['timeOffset'] == 'PT0H')):
+                observations_clean_elementID_temper.append(dictionary['elementId'])
+                observations_clean_values_temper.append(dictionary['value'])
+            elif ((dictionary['elementId'] == 'sum(precipitation_amount P1D)') and (dictionary['timeOffset'] == 'PT6H')):
+                observations_clean_elementID_rain.append(dictionary['elementId'])
+                observations_clean_values_rain.append(dictionary['value'])
+            
         
-    
-elementID = []
-value = []
-for i in observations:
-    elementID.append(i['elementId'])
-    value.append(i['value'])
-    print(i['elementId'], i['value'])
+
 
 
 weather_df = pd.DataFrame(reference_time)
 #renaming columns?
 weather_df['sourceID'] = pd.DataFrame(sourceid)
-weather_df['observationtype'] = pd.DataFrame(elementID)
-weather_df['value'] = pd.DataFrame(value)
+# weather_df['observationtype'] = pd.DataFrame(elementID)
+# weather_df['value'] = pd.DataFrame(value)
 weather_df.columns = ['datetime', 'sourceID', 'observationtype', 'value']
+
+
+weather_df_pivot = weather_df.pivot_table('value', ['datetime', 'sourceID'], 'observationtype')
 
 pprint.pprint(translated_json_2020['data'][0]['observations'])
 
