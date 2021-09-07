@@ -2,7 +2,8 @@ import requests
 import pandas as pd
 import os
 from itertools import product
-import numpy as np
+import psycopg2
+
 
 reg_points = pd.read_csv(r'C:\Users\Fredrik Lyford\Documents\GitHub\finalproject\files\registration_points.csv')
 
@@ -60,7 +61,8 @@ def get_traffic_data(start_date, end_date):
                     data_list.append(point_dict)
     
     df = pd.DataFrame(data_list)
-    df['date'] = pd.to_datetime(df['date'])
+    df['date'] = pd.to_datetime(df['date'], errors = 'coerce', utc = True)
+    df['date'] = df['date'].dt.strftime('%Y%m%d').astype(int)
     return df
 
 # start_date = pd.date_range('2017-01-01T12:00:00', periods = 24, freq = pd.offsets.MonthBegin(3), tz = 'Europe/Oslo')
@@ -72,13 +74,34 @@ def get_traffic_data(start_date, end_date):
 # weeks['to'] = weeks["to"].dt.strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
 df = get_traffic_data('2017-01-01T12:00:00+00:00', '2021-06-30T12:00:00+00:00')
-reg_points = df['reg_points'].unique().tolist()
-dates = df['date'].unique().tolist()
 
-df_product = pd.DataFrame(list(product(reg_points, dates)), columns = ['reg_points','date'])
-df_product = df_product.merge(df, how='left', on = ['reg_points','date'])
+def get_connection():
+    connection = psycopg2.connect(
+                host="trafikkluft.postgres.database.azure.com",                
+                port="5432",
+                user="postgres@trafikkluft",                
+                password="Awesome1337",                
+                database="postgres",            
+            )
+    return connection
 
-df_product['volume'].isna().sum()
-missing_values = df.isna().groupby(df['reg_points'], sort=False).sum()
+connection = get_connection()
+
+with connection.cursor() as traffic_cursor:
+    for index, row in df.iterrows():
+        traffic_cursor.execute(
+        """
+        insert into facts_traffic (sk_date, sk_traffic_id, volume, coverage)
+        values (%s, %s, %s, %s)
+        """, (row['reg_points'], row['date'], row['volume'], row['coverage']))
+    connection.commit()
+
+
+# reg_points = df['reg_points'].unique().tolist()
+# dates = df['date'].unique().tolist()
+# df_product = pd.DataFrame(list(product(reg_points, dates)), columns = ['reg_points','date'])
+# df_product = df_product.merge(df, how='left', on = ['reg_points','date'])
+# df_product['volume'].isna().sum()
+# missing_values = df.isna().groupby(df['reg_points'], sort=False).sum()
 # df.to_csv(r'files\traffic_data.csv', mode = 'a', index = False, header = not os.path.exists('files'))
 
