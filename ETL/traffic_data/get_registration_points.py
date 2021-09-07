@@ -24,6 +24,8 @@ json_data = requests.post(url, json = {'query':query}, headers = headers).json()
 
 data_list = []
 
+idx = 1
+
 for point in json_data['data']['trafficRegistrationPoints']:
     point_dict = {}
     point_dict['id'] = point['id']
