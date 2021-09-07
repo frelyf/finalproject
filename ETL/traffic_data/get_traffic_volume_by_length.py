@@ -1,9 +1,15 @@
+from numpy.lib.twodim_base import diagflat
+import requests
+import pandas as pd
+
+url = 'https://www.vegvesen.no/trafikkdata/api/'
+headers =  {"content-type": "application/json"}
 query = ''' query {
   trafficData(trafficRegistrationPointId: "44656V72812") {
     volume {
-      byHour(
-        from: "2019-10-24T12:00:00+02:00"
-        to: "2019-10-24T14:00:00+02:00"
+      byDay(
+        from: "2021-08-01T12:00:00+02:00"
+        to: "2021-08-08T14:00:00+02:00"
       ) {
         edges {
           node {
@@ -36,3 +42,8 @@ query = ''' query {
     }
   }
 }'''
+
+r = requests.post(url, json = {'query':query}, headers = headers)
+json_data = r.json()
+
+print(json_data)

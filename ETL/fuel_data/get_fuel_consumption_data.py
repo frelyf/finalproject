@@ -1,4 +1,6 @@
 import requests
+import pandas as pd
+from pyjstat import pyjstat
 
 url = 'https://data.ssb.no/api/v0/en/table/11185/'
 
@@ -30,6 +32,6 @@ query = {
   }
 }
 
-r = requests.get(url, json = query).json()
+r = requests.post(url, json = query)
+df_fuel_consumption = pyjstat.Dataset.read(r.text).write('dataframe')
 
-print(r)
