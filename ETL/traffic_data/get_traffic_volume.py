@@ -4,8 +4,6 @@ import pandas as pd
 
 reg_points = pd.read_csv(r'C:\Users\Fredrik Lyford\Documents\GitHub\finalproject\registration_points.csv')
 
-
-
 def get_traffic_data():
     data_list = []
     reg_list = reg_points['id'].tolist()
@@ -49,9 +47,8 @@ def get_traffic_data():
                     point_dict['volume'] = point['node']['total']['volumeNumbers']['volume']
                     point_dict['coverage'] = point['node']['total']['coverage']['percentage']
                     data_list.append(point_dict)
+    df = pd.DataFrame(data)
+    return df
 
-    return data_list
-
-data = get_traffic_data()
-df = pd.DataFrame(data)
+df = get_traffic_data()
 df.to_csv('traffic_volume_august.csv', sep = ',')

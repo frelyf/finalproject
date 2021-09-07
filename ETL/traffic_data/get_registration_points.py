@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import psycopg2
 
 url = 'https://www.vegvesen.no/trafikkdata/api/'
 headers =  { "content-type": "application/json" }
@@ -32,4 +33,24 @@ for point in json_data['data']['trafficRegistrationPoints']:
     data_list.append(point_dict)
 
 df = pd.DataFrame(data_list)
-df.to_csv('registration_points.csv', sep = ',')
+
+def get_connection():
+    connection = psycopg2.connect(
+                host="trafikkluft.postgres.database.azure.com",                
+                port="5432",                
+                user="postgres@trafikkluft",                
+                password="Awesome1337",                
+                database="postgres",            
+            )
+    return connection
+
+connection = get_connection()
+
+with connection.cursor() as traffic_cursor:
+    for index, row in df.iterrows():
+        traffic_cursor.execute(
+        """
+        insert into dim_traffic_reg (point_id, name, lat, lon)
+        values (%s, %s, %s, %s)
+        """, (row['id'], row['name'], row['lat'], row['lon']))
+    connection.commit()
