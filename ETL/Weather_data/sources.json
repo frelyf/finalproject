@@ -1,0 +1,1166 @@
+{
+  "@context": "https://frost.met.no/schema",
+  "@type": "SourceResponse",
+  "apiVersion": "v0",
+  "license": "https://creativecommons.org/licenses/by/3.0/no/",
+  "createdAt": "2021-09-07T07:40:45Z",
+  "queryTime": 2.716,
+  "currentItemCount": 40,
+  "itemsPerPage": 40,
+  "offset": 0,
+  "totalItemCount": 40,
+  "currentLink": "https://frost.met.no/sources/v0.jsonld?ids=SN*&county=Oslo",
+  "data": [
+    {
+      "@type": "SensorSystem",
+      "id": "SN18700",
+      "name": "OSLO - BLINDERN",
+      "shortName": "Oslo (Blindern)",
+      "country": "Norge",
+      "countryCode": "NO",
+      "wmoId": 1492,
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.72,
+          59.9423
+        ],
+        "nearest": false
+      },
+      "masl": 94,
+      "validFrom": "1931-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "MET.NO"
+      ],
+      "externalIds": [
+        "0-20000-0-01492",
+        "157.249.0.180:6785"
+      ],
+      "wigosId": "0-20000-0-01492"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18269",
+      "name": "OSLO - HAUGENSTUA",
+      "shortName": "Haugenstua",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.9035,
+          59.9535
+        ],
+        "nearest": false
+      },
+      "masl": 123,
+      "validFrom": "2000-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "wigosId": "0-578-0-18269"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18260",
+      "name": "OSLO - HØYBRÅTEN",
+      "shortName": "Høybråten",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.9257,
+          59.9468
+        ],
+        "nearest": false
+      },
+      "masl": 181,
+      "validFrom": "2013-05-30T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "510121052"
+      ],
+      "wigosId": "0-578-0-18260"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18317",
+      "name": "OSLO - ELVEBAKKEN",
+      "shortName": "Elvebakken",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7528,
+          59.9188
+        ],
+        "nearest": false
+      },
+      "masl": 15,
+      "validFrom": "2017-06-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "506131096"
+      ],
+      "wigosId": "0-578-0-18317"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18245",
+      "name": "OSLO - AMMERUD",
+      "shortName": "Ammerud",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8737,
+          59.9652
+        ],
+        "nearest": false
+      },
+      "masl": 201,
+      "validFrom": "2013-12-31T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "506131083"
+      ],
+      "wigosId": "0-578-0-18245"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18170",
+      "name": "OSLO - ØSTENSJØ",
+      "shortName": "Østensjø",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8368,
+          59.8955
+        ],
+        "nearest": false
+      },
+      "masl": 123,
+      "validFrom": "2012-04-16T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "508121029"
+      ],
+      "wigosId": "0-578-0-18170"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18215",
+      "name": "OSLO - BROBEKK",
+      "shortName": "Brobekk",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8315,
+          59.9323
+        ],
+        "nearest": false
+      },
+      "masl": 155,
+      "validFrom": "2013-06-06T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "510121063"
+      ],
+      "wigosId": "0-578-0-18215"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18233",
+      "name": "OSLO - NYLAND",
+      "shortName": "Nyland",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.864,
+          59.9452
+        ],
+        "nearest": false
+      },
+      "masl": 120,
+      "validFrom": "2013-04-18T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "508121016"
+      ],
+      "wigosId": "0-578-0-18233"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18980",
+      "name": "OSLO - LILLEAKER",
+      "shortName": "Lilleaker",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.635,
+          59.9185
+        ],
+        "nearest": false
+      },
+      "masl": 23,
+      "validFrom": "2000-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "externalIds": [
+        "518101027"
+      ],
+      "wigosId": "0-578-0-18980"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18020",
+      "name": "OSLO - LAMBERTSETER",
+      "shortName": "Lambertseter",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8185,
+          59.8775
+        ],
+        "nearest": false
+      },
+      "masl": 135,
+      "validFrom": "1985-05-15T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "wigosId": "0-578-0-18020"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18310",
+      "name": "OSLO - TØYEN",
+      "shortName": "Tøyen ",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7747,
+          59.9147
+        ],
+        "nearest": false
+      },
+      "masl": 19,
+      "validFrom": "2013-06-05T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "510121051"
+      ],
+      "wigosId": "0-578-0-18310"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN76914",
+      "name": "ITASMOBAWS1",
+      "shortName": "Rikshospitalet",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.715,
+          59.9492
+        ],
+        "nearest": false
+      },
+      "masl": 121,
+      "validFrom": "2019-10-09T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "MET.NO"
+      ],
+      "wigosId": "0-578-0-76914"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18920",
+      "name": "OSLO - BESSERUD",
+      "shortName": "Besserud",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.671,
+          59.9573
+        ],
+        "nearest": false
+      },
+      "masl": 177,
+      "validFrom": "1998-09-29T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "wigosId": "0-578-0-18920"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18690",
+      "name": "E18 HJORTNES",
+      "shortName": "E18 Hjortnes",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7043,
+          59.9112
+        ],
+        "nearest": false
+      },
+      "masl": 20,
+      "validFrom": "2011-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "STATENS VEGVESEN"
+      ],
+      "externalIds": [
+        "241",
+        "329002"
+      ],
+      "wigosId": "0-578-0-18690"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18645",
+      "name": "OSLO - SOLLI PLASS",
+      "shortName": "Solli plass",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7202,
+          59.9142
+        ],
+        "nearest": false
+      },
+      "masl": 25,
+      "validFrom": "2013-12-30T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "506131085"
+      ],
+      "wigosId": "0-578-0-18645"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18205",
+      "name": "OSLO - LØREN",
+      "shortName": "Løren ",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7902,
+          59.9287
+        ],
+        "nearest": false
+      },
+      "masl": 88,
+      "validFrom": "2013-12-31T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "506131084"
+      ],
+      "wigosId": "0-578-0-18205"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18950",
+      "name": "TRYVANNSHØGDA",
+      "shortName": "Tryvannshøgda",
+      "country": "Norge",
+      "countryCode": "NO",
+      "wmoId": 1490,
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.6693,
+          59.9847
+        ],
+        "nearest": false
+      },
+      "masl": 514,
+      "validFrom": "1927-08-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "MET.NO"
+      ],
+      "externalIds": [
+        "0-20000-0-01490",
+        "10.249.0.2"
+      ],
+      "wigosId": "0-20000-0-01490"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18235",
+      "name": "OSLO - FURUSET",
+      "shortName": "Furuset ",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8972,
+          59.942
+        ],
+        "nearest": false
+      },
+      "masl": 160,
+      "validFrom": "2013-05-30T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "510121050"
+      ],
+      "wigosId": "0-578-0-18235"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18420",
+      "name": "OSLO - DISEN",
+      "shortName": "Disen",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7903,
+          59.946
+        ],
+        "nearest": false
+      },
+      "masl": 136,
+      "validFrom": "1998-06-02T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "externalIds": [
+        "518101004"
+      ],
+      "wigosId": "0-578-0-18420"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18160",
+      "name": "NORDSTRAND",
+      "shortName": "Nordstrand",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7912,
+          59.873
+        ],
+        "nearest": false
+      },
+      "masl": 118,
+      "validFrom": "1935-09-17T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, BRANN- OG REDNINGSETATEN"
+      ],
+      "wigosId": "0-578-0-18160"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18815",
+      "name": "OSLO - BYGDØY",
+      "shortName": "Bygdøy",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.6825,
+          59.9048
+        ],
+        "nearest": false
+      },
+      "masl": 15,
+      "validFrom": "2000-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN",
+        "MET.NO"
+      ],
+      "externalIds": [
+        "10.249.0.195",
+        "1526"
+      ],
+      "wigosId": "0-578-0-18815"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18315",
+      "name": "OSLO - SOFIENBERG",
+      "shortName": "Sofienberg ",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7623,
+          59.919
+        ],
+        "nearest": false
+      },
+      "masl": 37,
+      "validFrom": "2016-01-07T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "wigosId": "0-578-0-18315"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18405",
+      "name": "OSLO - SANDAKER",
+      "shortName": "Sandaker",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7727,
+          59.9398
+        ],
+        "nearest": false
+      },
+      "masl": 110,
+      "validFrom": "2013-03-21T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "508121021"
+      ],
+      "wigosId": "0-578-0-18405"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18970",
+      "name": "OSLO - LYSAKER",
+      "shortName": "Lysaker ",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.6348,
+          59.9185
+        ],
+        "nearest": false
+      },
+      "masl": 23,
+      "validFrom": "2019-07-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "518101027"
+      ],
+      "wigosId": "0-578-0-18970"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18701",
+      "name": "OSLO - BLINDERN PLU",
+      "shortName": "Blindern PLU",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7202,
+          59.9423
+        ],
+        "nearest": false
+      },
+      "masl": 94,
+      "validFrom": "1968-04-16T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "wigosId": "0-578-0-18701"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18450",
+      "name": "MARIDALSOSET",
+      "shortName": "Maridalsoset",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7894,
+          59.9719
+        ],
+        "nearest": false
+      },
+      "masl": 173,
+      "validFrom": "1877-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "wigosId": "0-578-0-18450"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18390",
+      "name": "OSLO - BJØLSEN",
+      "shortName": "Bjølsen",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7483,
+          59.9418
+        ],
+        "nearest": false
+      },
+      "masl": 74,
+      "validFrom": "2014-04-24T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "506131068"
+      ],
+      "wigosId": "0-578-0-18390"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18240",
+      "name": "E6 FURUSET",
+      "shortName": "E6 Furuset",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8905,
+          59.9378
+        ],
+        "nearest": false
+      },
+      "masl": 160,
+      "validFrom": "2013-10-07T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "STATENS VEGVESEN"
+      ],
+      "externalIds": [
+        "243",
+        "329004"
+      ],
+      "wigosId": "0-578-0-18240"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN17980",
+      "name": "OSLO - LJABRUVEIEN",
+      "shortName": "Ljabruveien",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8236,
+          59.8427
+        ],
+        "nearest": false
+      },
+      "masl": 92,
+      "validFrom": "2000-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "wigosId": "0-578-0-17980"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18195",
+      "name": "OSLO - HØYENHALL",
+      "shortName": "Høyenhall",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8212,
+          59.9033
+        ],
+        "nearest": false
+      },
+      "masl": 80,
+      "validFrom": "2014-04-23T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "506131066"
+      ],
+      "wigosId": "0-578-0-18195"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18500",
+      "name": "BJØRNHOLT",
+      "shortName": "Bjørnholt",
+      "country": "Norge",
+      "countryCode": "NO",
+      "wmoId": 1489,
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.6878,
+          60.0513
+        ],
+        "nearest": false
+      },
+      "masl": 360,
+      "validFrom": "1876-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "MET.NO"
+      ],
+      "externalIds": [
+        "0-20000-0-01489",
+        "10.249.0.46",
+        "10.249.1.131",
+        "10.249.1.45",
+        "1489"
+      ],
+      "wigosId": "0-20000-0-01489"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18180",
+      "name": "OSLO - TRASOP",
+      "shortName": "Trasop",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.847,
+          59.907
+        ],
+        "nearest": false
+      },
+      "masl": 176,
+      "validFrom": "2013-05-22T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "508121025"
+      ],
+      "wigosId": "0-578-0-18180"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18270",
+      "name": "OSLO - VESTLI",
+      "shortName": "Vestli",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.9185,
+          59.9683
+        ],
+        "nearest": false
+      },
+      "masl": 200,
+      "validFrom": "1974-04-18T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "NVE"
+      ],
+      "externalIds": [
+        "6.12"
+      ],
+      "wigosId": "0-578-0-18270"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18162",
+      "name": "OSLO - KVÆRNERBYEN",
+      "shortName": "Kværnerbyen",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7863,
+          59.9047
+        ],
+        "nearest": false
+      },
+      "masl": 15,
+      "validFrom": "2014-04-23T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "506131070"
+      ],
+      "wigosId": "0-578-0-18162"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18440",
+      "name": "OSLO - KJELSÅS",
+      "shortName": "Kjelsås ",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7853,
+          59.9605
+        ],
+        "nearest": false
+      },
+      "masl": 162,
+      "validFrom": "2013-05-21T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "508121019"
+      ],
+      "wigosId": "0-578-0-18440"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18225",
+      "name": "OSLO - TONSENHAGEN",
+      "shortName": "Tonsenhagen",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8293,
+          59.9467
+        ],
+        "nearest": false
+      },
+      "masl": 204,
+      "validFrom": "2013-06-05T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "510121062"
+      ],
+      "wigosId": "0-578-0-18225"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18165",
+      "name": "OSLO - RYEN",
+      "shortName": "Ryen",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.8013,
+          59.8963
+        ],
+        "nearest": false
+      },
+      "masl": 130,
+      "validFrom": "2013-02-23T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "OSLO KOMMUNE, VAV ROSIM"
+      ],
+      "externalIds": [
+        "508121002"
+      ],
+      "wigosId": "0-578-0-18165"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18210",
+      "name": "OSLO - HOVIN",
+      "shortName": "Hovin",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.804,
+          59.923
+        ],
+        "nearest": false
+      },
+      "masl": 100,
+      "validFrom": "1999-01-15T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "MET.NO",
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN",
+        "OSLO KOMMUNE, BYMILJØETATEN"
+      ],
+      "externalIds": [
+        "10.249.1.107",
+        "1516"
+      ],
+      "wigosId": "0-578-0-18210"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18703",
+      "name": "OSLO - BLINDERN TESTFELT",
+      "shortName": "Blindern test",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.7194,
+          59.94256
+        ],
+        "nearest": false
+      },
+      "masl": 96,
+      "validFrom": "1987-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "MET.NO",
+        "OSLO KOMMUNE, VANN- OG AVLØPSETATEN"
+      ],
+      "externalIds": [
+        "510121060"
+      ],
+      "wigosId": "0-578-0-18703"
+    },
+    {
+      "@type": "SensorSystem",
+      "id": "SN18410",
+      "name": "RV150 AKER SYKEHUS",
+      "shortName": "Aker Sykehus",
+      "country": "Norge",
+      "countryCode": "NO",
+      "geometry": {
+        "@type": "Point",
+        "coordinates": [
+          10.798,
+          59.941
+        ],
+        "nearest": false
+      },
+      "masl": 140,
+      "validFrom": "2011-01-01T00:00:00.000Z",
+      "county": "OSLO",
+      "countyId": 3,
+      "municipality": "OSLO",
+      "municipalityId": 301,
+      "stationHolders": [
+        "STATENS VEGVESEN"
+      ],
+      "externalIds": [
+        "242",
+        "329003"
+      ],
+      "wigosId": "0-578-0-18410"
+    }
+  ]
+}
