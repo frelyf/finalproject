@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from itertools import product
 import psycopg2
+import numpy as np
 
 
 reg_points = pd.read_csv(r'C:\Users\Fredrik Lyford\Documents\GitHub\finalproject\files\registration_points.csv')
@@ -87,13 +88,23 @@ def get_connection():
 
 connection = get_connection()
 
+def nan_to_null(f,
+        _NULL=psycopg2.extensions.AsIs('NULL'),
+        _Float=psycopg2.extensions.Float):
+    if not np.isnan(f):
+        return _Float(f)
+    return _NULL
+
+psycopg2.extensions.register_adapter(float, nan_to_null)
+
 with connection.cursor() as traffic_cursor:
     for index, row in df.iterrows():
         traffic_cursor.execute(
         """
-        insert into facts_traffic (sk_date, sk_traffic_id, volume, coverage)
+        insert into facts_traffic (sk_date, sk_traffic_reg, volume, coverage)
         values (%s, %s, %s, %s)
-        """, (row['reg_points'], row['date'], row['volume'], row['coverage']))
+        """, (row['date'], row['reg_points'], row['volume'], row['coverage']))
+        print(index)
     connection.commit()
 
 

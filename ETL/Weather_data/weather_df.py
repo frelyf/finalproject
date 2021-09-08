@@ -8,16 +8,13 @@ import json
 import pprint
 import pandas as pd
 
-path_2020 = r"C:\Users\Abder\Desktop\json graduation\all_stations2020.json"
-path_2021 = r"C:\Users\Abder\Desktop\json graduation\all_stations2021includingJune.json"
+path_2020 = r"C:\Users\Fredrik Lyford\Documents\GitHub\finalproject\ETL\Weather_data\all_stations2020.json"
+path_2021 = r"C:\Users\Fredrik Lyford\Documents\GitHub\finalproject\ETL\Weather_data\all_stations2021includingJune.json"
 
 reference_time = []
 sourceid = []
 observations_crude = []
-observations_clean_elementID_temper = []
-observations_clean_values_temper = []
-observations_clean_elementID_rain = []
-observations_clean_values_rain = []
+data_list = []
 
 
 with open(path_2020) as year_2020:
@@ -26,17 +23,22 @@ with open(path_2020) as year_2020:
         observations_crude.append(translated_json_2020['data'][i]['observations'])
         reference_time.append(translated_json_2020['data'][i]['referenceTime'])
         sourceid.append(translated_json_2020['data'][i]['sourceId'])
-    for dictionaries in observations_crude:
-        for dictionary in dictionaries:
-            if ((dictionary['elementId'] == 'mean(air_temperature P1D)') and (dictionary['timeOffset'] == 'PT0H')):
-                observations_clean_elementID_temper.append(dictionary['elementId'])
-                observations_clean_values_temper.append(dictionary['value'])
-            elif ((dictionary['elementId'] == 'sum(precipitation_amount P1D)') and (dictionary['timeOffset'] == 'PT6H')):
-                observations_clean_elementID_rain.append(dictionary['elementId'])
-                observations_clean_values_rain.append(dictionary['value'])
-            
-        
+    
+    
+    
+for observation_set, reference_time, sourceid in zip(observations_crude, reference_time, sourceid):
+    for observation in observation_set:
+        data_dict = {}
+        data_dict['source_id'] = sourceid
+        data_dict['date'] = reference_time
+        data_dict['element_id'] = observation['elementId']
+        data_dict['value'] = observation['value']
+        data_list.append(data_dict)
 
+df = pd.DataFrame(data_list)
+df_pivot = df.pivot_table('value', ['date', 'source_id'], 'element_id').reset_index()
+df_pivot['date'] = pd.to_datetime(df_pivot['date'], errors = 'coerce')
+df_pivot['date'] = df_pivot['date'].dt.strftime('%Y%m%d').astype(int)
 
 
 weather_df = pd.DataFrame(reference_time)
@@ -47,7 +49,6 @@ weather_df['sourceID'] = pd.DataFrame(sourceid)
 weather_df.columns = ['datetime', 'sourceID', 'observationtype', 'value']
 
 
-weather_df_pivot = weather_df.pivot_table('value', ['datetime', 'sourceID'], 'observationtype')
 
 pprint.pprint(translated_json_2020['data'][0]['observations'])
 
