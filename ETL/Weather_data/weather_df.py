@@ -40,15 +40,3 @@ df_pivot = df.pivot_table('value', ['date', 'source_id'], 'element_id').reset_in
 df_pivot['date'] = pd.to_datetime(df_pivot['date'], errors = 'coerce')
 df_pivot['date'] = df_pivot['date'].dt.strftime('%Y%m%d').astype(int)
 
-
-weather_df = pd.DataFrame(reference_time)
-#renaming columns?
-weather_df['sourceID'] = pd.DataFrame(sourceid)
-# weather_df['observationtype'] = pd.DataFrame(elementID)
-# weather_df['value'] = pd.DataFrame(value)
-weather_df.columns = ['datetime', 'sourceID', 'observationtype', 'value']
-
-
-
-pprint.pprint(translated_json_2020['data'][0]['observations'])
-
