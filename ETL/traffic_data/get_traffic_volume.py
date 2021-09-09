@@ -1,4 +1,4 @@
-import requests
+ import requests
 import pandas as pd
 import os
 from itertools import product
@@ -108,7 +108,7 @@ weeks['to'] = pd.to_datetime(weeks['to'])
 weeks['from'] = weeks["from"].dt.strftime("%Y-%m-%dT%H:%M:%S+00:00")
 weeks['to'] = weeks["to"].dt.strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
-df = get_traffic_data('2016-12-31T12:00:00+00:00', '2016-12-31T12:00:00+00:00')
+df = get_traffic_data('2021-06-30T12:00:00+00:00', '2021-09-07T12:00:00+00:00')
 
 df_template = df.copy()
 for index, row in weeks.iterrows():
@@ -123,6 +123,8 @@ for index, row in weeks.iterrows():
     
 df_postgres = df_template.copy()
 df_postgres = df_postgres.reset_index(drop = True)
+
+
     
     
 def get_connection():
@@ -147,7 +149,7 @@ def nan_to_null(f,
 psycopg2.extensions.register_adapter(float, nan_to_null)
 
 with connection.cursor() as traffic_cursor:
-    for index, row in df_postgres.iterrows():
+    for index, row in df.iterrows():
         traffic_cursor.execute(
         """
         insert into facts_traffic (sk_date, sk_traffic_reg, volume, coverage)

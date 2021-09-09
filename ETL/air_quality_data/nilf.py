@@ -55,7 +55,7 @@ def write_to_csv (search_terms):
         for i in data:
             writer.writerow(i.values())
 
-write_to_csv(oslo_stations_info)
+# write_to_csv(oslo_stations_info)
 #write_to_csv('/obs/historical/2021-08-01/2021-08-07/Alnabru')
 
 def obs_per_day (from_date, to_date, station_name):
@@ -107,8 +107,8 @@ def insert_p_t_dim():
         for i in data:
             cursor.execute('insert into dim_air_quality (station_id, name, station_type, lat, lon) values (%s, %s, %s, %s, %s)', (i['id'], i['station'], i['type'], i['latitude'], i['longitude']))
 
-insert_p_t_dim()
-print(oslo_stations_info)
+# insert_p_t_dim()
+# print(oslo_stations_info)
 
 def insert_p_t_fact(to_date, from_date):
     data = get_all_obs(to_date, from_date)
@@ -134,13 +134,31 @@ def insert_p_t_fact(to_date, from_date):
                         data_list.append(data_dict)
     df = pd.DataFrame(data_list)
     df = df.pivot_table(index = ['sk_date','sk_air_quality'], columns = ['component'], values = 'value').fillna(np.nan).reset_index()
-    conn = get_connection()
-    with conn as connection:
-        cursor = connection.cursor()
-        for index, row in df.iterrows():
-            cursor.execute(f'insert into facts_air_quality (sk_date, sk_air_quality, NO, NO2, NOx, PM10, PM2_5) values (%s, %s, %s, %s, %s, %s, %s)', (row['sk_date'], row['sk_air_quality'], row['NO'], row['NO2'], row['NOx'], row['PM10'], row['PM2.5']))
+    return df
+    # conn = get_connection()
+    # with conn as connection:
+    #     cursor = connection.cursor()
+    #     for index, row in df.iterrows():
+    #         cursor.execute(f'insert into facts_air_quality (sk_date, sk_air_quality, NO, NO2, NOx, PM10, PM2_5) values (%s, %s, %s, %s, %s, %s, %s)', (row['sk_date'], row['sk_air_quality'], row['NO'], row['NO2'], row['NOx'], row['PM10'], row['PM2.5']))
 
-#insert_p_t_fact('2015-01-01','2021-06-30')       
+start_date = pd.date_range('2015-01-01', periods = 26, freq = pd.offsets.MonthBegin(3))
+end_date = pd.date_range('2015-03-31', periods = 26, freq = pd.offsets.MonthEnd(3))
+weeks = pd.DataFrame({'from':start_date, 'to':end_date})
+weeks['from'] = pd.to_datetime(weeks['from'])
+weeks['to'] = pd.to_datetime(weeks['to'])
+weeks['from'] = weeks["from"].dt.strftime("%Y-%m-%d")
+weeks['to'] = weeks["to"].dt.strftime("%Y-%m-%d")
+
+df_list = []
+df_aq = pd.DataFrame(columns = ['sk_date', 'sk_air_quality', 'NO', 'NO2', 'NOx', 'PM10', 'PM2.5'])
+for index, row in weeks.iterrows():
+    df = insert_p_t_fact(row['from'],row['to'])    
+    df_aq = pd.concat([df_aq, df], ignore_index = True)
+    print(index)
+
+
+
+
 
 def get_time():
     conn = get_connection()
@@ -192,10 +210,10 @@ def insert_data_dim_date():
                 WHEN EXTRACT(QUARTER FROM datum) = 4 THEN 'Fourth'
                 END AS quarter_name,
             EXTRACT(ISOYEAR FROM datum) AS year_actual
-            FROM (SELECT '2015-01-01'::DATE + SEQUENCE.DAY AS datum
+            FROM (SELECT '2021-07-01'::DATE + SEQUENCE.DAY AS datum
             FROM GENERATE_SERIES(0, 2372) AS SEQUENCE (DAY)
             GROUP BY SEQUENCE.DAY) DQ
             ORDER BY 1;''')
         connection.commit()
 
-#insert_data_dim_date()
+insert_data_dim_date()
