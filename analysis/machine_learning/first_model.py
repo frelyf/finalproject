@@ -29,8 +29,7 @@ df_avg = df_avg.iloc[364:].reset_index()
 
 
 X_cols = [
-    'traffic_volume', 'precipitation', 'wind_speed',
-    'air_temperature', 'pm2_5','pm10', 'nox', 'no',
+    'traffic_volume', 'precipitation', 'wind_speed','air_temperature',
     'traffic_volume_lag_1', 'precipitation_lag_1', 'wind_speed_lag_1',
     'air_temperature_lag_1', 'pm2_5_lag_1', 'pm10_lag_1', 'nox_lag_1',
     'no2_lag_1', 'no_lag_1', 'traffic_volume_lag_2', 'precipitation_lag_2',
@@ -46,7 +45,7 @@ X_cols = [
     'no2_lag_12', 'no_lag_12'
 ]
 
-y_col = ['no2']
+y_col = ['pm10','pm2_5', 'no','no2', 'nox']
 
 # Imputing values
 imputer_X = KNNImputer(n_neighbors = 5)
@@ -166,14 +165,15 @@ xgb_regressor(X_train, y_train, X_test, y_test)
 
 # DNN
 
-input_layer = Input(shape = (53,))
-second_hidden_layer = Dense(32, activation = 'relu')(input_layer)
+input_layer = Input(shape = (49,))
+normlization_layer = BatchNormalization()(input_layer)
+second_hidden_layer = Dense(128, activation = 'relu')(normlization_layer)
 first_dropout_layer = Dropout(0.2)(second_hidden_layer)
-third_hidden_layer = Dense(20, activation = 'relu')(first_dropout_layer)
-first_regularization_layer = Dense(10, kernel_regularizer = regularizers.l2(0.01))(third_hidden_layer)
-second_dropout_layer = Dropout(0.1)(first_regularization_layer)
-fourth_hidden_layer = Dense(5, activation = 'relu')(second_dropout_layer)
-output_layer = Dense(1)(fourth_hidden_layer)
+third_hidden_layer = Dense(64, activation = 'relu')(first_dropout_layer)
+first_regularization_layer = Dense(32)(third_hidden_layer)
+second_dropout_layer = Dropout(0.2)(first_regularization_layer)
+fourth_hidden_layer = Dense(16, activation = 'relu')(second_dropout_layer)
+output_layer = Dense(5)(fourth_hidden_layer)
 
 model = Model(inputs = input_layer, outputs = output_layer)
 model.compile(optimizer = 'adam', loss = 'mse', metrics = ['mae'])
@@ -181,7 +181,7 @@ history = model.fit(
     X_train, 
     y_train, 
     batch_size=256, 
-    epochs=3000,
+    epochs=2000,
     validation_data = (X_test, y_test))
 
 
