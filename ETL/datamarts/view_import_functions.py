@@ -1,6 +1,5 @@
 import psycopg2
 import pandas as pd
-import numpy as np
 
 def get_connection():
     connection = psycopg2.connect(
@@ -12,9 +11,17 @@ def get_connection():
             )
     return connection
 
+def get_df_simple(aggregator):
+    engine = get_connection()
+    query = f"""select * from {aggregator}_values_per_date"""
+    df = pd.read_sql_query(query, con = engine)
+    return df
+
+
 def get_df_with_lags():
     engine = get_connection()
     
+    #Queries
     month_lag_query = """select * from avg_values_month_lag"""
     bi_month_lag_query = """select * from avg_values_bi_month_lag"""
     qrt_year_lag_query = """select * from avg_values_qrt_year_lag"""
@@ -30,25 +37,31 @@ def get_df_with_lags():
     df_half_year_lag = pd.read_sql_query(half_year_lag_query, con = engine)
     df_yearlag = pd.read_sql_query(year_lag_query, con = engine)
     
-    # Remove dateid_serial from lags
+    # Remove dateid_serial from lags and rename to dateid_serial for merging
     del df_month_lag['dateid_serial']
     del df_bi_month_lag['dateid_serial']
     del df_qrt_year_lag['dateid_serial']
     del df_half_year_lag['dateid_serial']
     del df_yearlag['dateid_serial']
     
-    # Merge lags
-    df = df.merge(df_month_lag, how = 'left', left_on='dateid_serial', right_on='month_lag')
-    df = df.merge(df_bi_month_lag, how = 'left', left_on='dateid_serial', right_on='bi_month_lag')
-    df = df.merge(df_qrt_year_lag, how = 'left', left_on='dateid_serial', right_on='qrt_year_lag')
-    df = df.merge(df_half_year_lag, how = 'left', left_on='dateid_serial', right_on='half_year_lag')
-    df = df.merge(df_yearlag, how = 'left', left_on='dateid_serial', right_on='year_lag')
+    df_month_lag['dateid_serial'] = df_month_lag['month_lag']
+    df_bi_month_lag['dateid_serial'] = df_bi_month_lag['bi_month_lag']
+    df_qrt_year_lag['dateid_serial'] = df_qrt_year_lag['qrt_year_lag']
+    df_half_year_lag['dateid_serial'] = df_half_year_lag['half_year_lag']
+    df_yearlag['dateid_serial'] = df_yearlag['year_lag']
     
-    del df['month_lag']
-    del df['bi_month_lag']
-    del df['qrt_year_lag']
-    del df['half_year_lag']
-    del df['year_lag']
+    del df_month_lag['month_lag']
+    del df_bi_month_lag['bi_month_lag']
+    del df_qrt_year_lag['qrt_year_lag']
+    del df_half_year_lag['half_year_lag']
+    del df_yearlag['year_lag']
+    
+    # Merge lags
+    df = df.merge(df_month_lag, how = 'left', on = 'dateid_serial')
+    df = df.merge(df_bi_month_lag, how = 'left', on = 'dateid_serial')
+    df = df.merge(df_qrt_year_lag, how = 'left', on = 'dateid_serial')
+    df = df.merge(df_half_year_lag, how = 'left', on = 'dateid_serial')
+    df = df.merge(df_yearlag, how = 'left', on = 'dateid_serial')
     
     #Return df
     return df
@@ -57,6 +70,7 @@ def get_df_with_lags():
 def get_df_with_lags_per_area(coordinate):    
     engine = get_connection()
 
+    # Queries
     month_lag_query = f"""select * from avg_values_month_lag_{coordinate}"""
     bi_month_lag_query = f"""select * from avg_values_bi_month_lag_{coordinate}"""
     qrt_year_lag_query = f"""select * from avg_values_qrt_year_lag_{coordinate}"""
@@ -72,7 +86,7 @@ def get_df_with_lags_per_area(coordinate):
     df_half_year_lag = pd.read_sql_query(half_year_lag_query, con = engine)
     df_yearlag = pd.read_sql_query(year_lag_query, con = engine)
     
-    # Remove dateid_serial from lags
+    # Remove dateid_serial from lags and rename to dateid_serial for merging
     del df_month_lag['dateid_serial']
     del df_bi_month_lag['dateid_serial']
     del df_qrt_year_lag['dateid_serial']
