@@ -43,9 +43,10 @@ path_2018 = r"C:\Users\Abder\Desktop\json graduation\all_stations2018.json"
 path_2019 = r"C:\Users\Abder\Desktop\json graduation\all_stations2019.json"
 path_2020 = r"C:\Users\Abder\Desktop\Graduation project\ETL\Weather_data\all_stations2020.json"
 path_2021 = r"C:\Users\Abder\Desktop\Graduation project\ETL\Weather_data\all_stations2021includingJune.json"
+path_2021_latest = r"C:\Users\Abder\Desktop\json graduation\all_stations2021until09.09.2021.json"
 
 
-def json_to_df (path, savepoint):
+def json_to_df (path):
     
     reference_time = []
     sourceid = []
@@ -57,7 +58,9 @@ def json_to_df (path, savepoint):
         for i in range(0, len(translated_json['data'])):
             observations_crude.append(translated_json['data'][i]['observations'])
             reference_time.append(translated_json['data'][i]['referenceTime'])
-            sourceid.append(translated_json['data'][i]['sourceId'])
+            unfinished = (translated_json['data'][i]['sourceId'])
+            partly_finished = unfinished.split(':')
+            sourceid.append(partly_finished[0])
 
     for observation_set, reference_time, sourceid in zip(observations_crude, reference_time, sourceid):
         for observation in observation_set:
@@ -72,11 +75,10 @@ def json_to_df (path, savepoint):
     df_pivot = df.pivot_table('value', ['date', 'source_id'], 'element_id').reset_index()
     df_pivot['date'] = pd.to_datetime(df_pivot['date'], errors = 'coerce')
     df_pivot['date'] = df_pivot['date'].dt.strftime('%Y%m%d').astype(int)
+    return df_pivot
     
-    df_pivot.to_csv(path_or_buf=savepoint)
 
-#json_to_df(path_2020, year_2020, savepath)
-#json_to_df(path_2021, savepath)
+latest_df = json_to_df(path_2021_latest)
 
 #-------------------------------------------2020----------------------------------------------------------
 reference_time = []
@@ -243,8 +245,23 @@ df_pivot5['date'] = df_pivot5['date'].dt.strftime('%Y%m%d').astype(int)
 df_pivot_full5 = pd.merge(left=df_pivot5, right=location_df, how='left', on=['source_id'])
 #-------------------------------------------2017----------------------------------------------------------
 
+# merging all years into one big df for insertion
+df_full_range = pd.concat([df_pivot, df_pivot2, df_pivot3, df_pivot4, df_pivot5, latest_df],ignore_index=True)
 
-#-------------------------------------------an attempt was made----------------------------------------------------------
+
+#Fredriks smart code to translate source_id and create a source_id key based on index from location_df
+location_df = location_df.reset_index()
+
+def surrogate_key(sourceid):
+    sk = location_df.loc[location_df['source_id'] == sourceid, 'index']
+    return sk.iloc[0]
+
+surrogate_key('SN18269')
+
+df_full_range['source_id'] = df_full_range['source_id'].apply(surrogate_key)
+
+
+#---------------------------------------------------------db_writer-------------------------------------------------------------------
 def opensesame():
         connection = psycopg2.connect(
                 user="postgres@trafikkluft",
@@ -256,23 +273,26 @@ def opensesame():
         return connection
 
 
-df_full_range = pd.concat([df_pivot, df_pivot2, df_pivot3, df_pivot4, df_pivot5],ignore_index=True)
-
-location_df = location_df.reset_index()
-
-def surrogate_key(sourceid):
-    sk = location_df.loc[location_df['source_id'] == sourceid, 'index']
-    return sk.iloc[0]
-
-surrogate_key('SN18269')
-
-df_full_range['source_id'] = df_full_range['source_id'].apply(surrogate_key)
-
 def database_writer(data):
-    with opensesame() as connection:
-        cursor = connection.cursor()
-        cursor.executemany(f"""INSERT INTO dim_weather(weather_station_measurement_sk, weather_station_id, location_name, long, lat) VALUES(%s, %s, %s, %s, %s)""",data)
-        return
+    connection = opensesame()
+    with connection.cursor() as weather_cursor:
+        for index, row in data.iterrows():
+            daterow = row['date']
+            source_id = row['source_id']
+            temp = row['mean(air_temperature P1D)']
+            wind = row['mean(wind_speed P1D)']
+            rain = row['sum(precipitation_amount P1D)']
+            weather_cursor.execute(
+                """INSERT INTO facts_weather(sk_date, sk_weather, "mean(air_temperature P1D)", "mean(wind_speed P1D)", "sum(precipitation_amount P1D)") 
+                VALUES(%s, %s, %s, %s, %s)""",
+                (daterow, source_id, temp, wind, rain))  
+            print(index)
+        connection.commit()
+            
+database_writer(df_full_range)
+
+
+
 #-------------------------------------------an attempt was made----------------------------------------------------------
 
 #-------------------------------------------this will create a whole new table based on given dataframe-------------------------------------
@@ -280,6 +300,31 @@ from sqlalchemy import create_engine
 engine = create_engine('postgresql://postgres@trafikkluft:Awesome1337@trafikkluft.postgres.database.azure.com:5432/postgres')
 df_full_range.to_sql('facts_weather', engine)
 
-database_writer(location_df)
-#-------------------------------------------this will create a whole new table based on given dataframe-------------------------------------
+
+#-------------------------------------------this will create a whole new table based on given dataframe-------------------------------'------
+import matplotlib.pyplot as plt 
+
+
+
+query = "SELECT * FROM dim_weather"
+query2 = "SELECT * FROM dim_traffic_reg"
+query3 = "SELECT * FROM dim_air_quality"
+
+
+connection = opensesame()
+with connection.cursor() as dim_retrive:
+    dim_retrive.execute(query3)
+    dim_table = dim_retrive.fetchall()
+
+dim_table_w = pd.DataFrame(dim_table)
+dim_table_a = pd.DataFrame(dim_table)
+dim_table_t = pd.DataFrame(dim_table)
+
+
+plt.scatter(dim_table_w[3], dim_table_w[4])
+plt.scatter(dim_table_t[4], dim_table_t[3])
+plt.scatter(dim_table_a[5], dim_table_a[4])
+plt.show()
+
+
 
