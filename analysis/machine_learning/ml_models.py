@@ -46,7 +46,7 @@ X_cols = [
     'no2_lag_12', 'no_lag_12'
 ]
 
-y_col = ['pm10','pm2_5', 'no','no2', 'nox']
+y_col = ['pm10']
 
 # Imputing values
 imputer_X = KNNImputer(n_neighbors = 5)
@@ -137,7 +137,7 @@ kneighborsregressor(X_train, y_train, X_test, y_test)
 # XGBoost
 
 def xgb_regressor(X_train, y_train, X_test, y_test):
-    xgbr_model = MultiOutputRegressor(xgb.XGBRegressor())
+    xgbr_model = xgb.XGBRegressor()
     fit_params = dict(
         eval_set=[(X_test, y_test)], 
         early_stopping_rounds=10
