@@ -8,6 +8,7 @@ from sklearn.impute import KNNImputer
 import datetime as dt
 import sklearn
 import xgboost as xgb
+from sklearn.multioutput import MultiOutputRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -136,8 +137,12 @@ kneighborsregressor(X_train, y_train, X_test, y_test)
 # XGBoost
 
 def xgb_regressor(X_train, y_train, X_test, y_test):
-    xgbr_model = xgb.XGBRegressor()
-    xgbr_model.fit(X_train, y_train, eval_set = [(X_test, y_test)], early_stopping_rounds = 100)
+    xgbr_model = MultiOutputRegressor(xgb.XGBRegressor())
+    fit_params = dict(
+        eval_set=[(X_test, y_test)], 
+        early_stopping_rounds=10
+        )
+    xgbr_model.fit(X_train, y_train, **fit_params)
     
     print('R Squared for training data:')
     print(xgbr_model.score(X_train, y_train))
@@ -161,36 +166,3 @@ def xgb_regressor(X_train, y_train, X_test, y_test):
             ''')
 
 xgb_regressor(X_train, y_train, X_test, y_test)
-
-
-# DNN
-
-input_layer = Input(shape = (49,))
-normlization_layer = BatchNormalization()(input_layer)
-second_hidden_layer = Dense(128, activation = 'relu')(normlization_layer)
-first_dropout_layer = Dropout(0.2)(second_hidden_layer)
-third_hidden_layer = Dense(64, activation = 'relu')(first_dropout_layer)
-first_regularization_layer = Dense(32)(third_hidden_layer)
-second_dropout_layer = Dropout(0.2)(first_regularization_layer)
-fourth_hidden_layer = Dense(16, activation = 'relu')(second_dropout_layer)
-output_layer = Dense(5)(fourth_hidden_layer)
-
-model = Model(inputs = input_layer, outputs = output_layer)
-model.compile(optimizer = 'adam', loss = 'mse', metrics = ['mae'])
-history = model.fit(
-    X_train, 
-    y_train, 
-    batch_size=256, 
-    epochs=2000,
-    validation_data = (X_test, y_test))
-
-
-def plot():
-    plt.plot(np.sqrt(history.history['loss']))
-    plt.plot(np.sqrt(history.history['val_loss']))
-    plt.plot(history.history['mae'], label = 'mae')
-    plt.plot(history.history['val_mae'], label = 'val_mae')
-    plt.legend(['mae','val_mae', 'loss','val_loss'])
-    plt.show()
-
-plot()
