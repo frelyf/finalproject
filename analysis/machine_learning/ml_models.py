@@ -23,54 +23,12 @@ from tensorflow.keras import regularizers
 import matplotlib.pyplot as plt
 
 from etl.datamarts.view_import_functions import get_df_simple, get_df_with_lags, get_df_with_lags_per_area
+from analysis.data_prep import get_dnn_test_train, get_dnn_X_y_X_pred, get_ml_test_train, get_ml_X_y_X_pred
 
-df_avg = get_df_with_lags()
-df_avg = df_avg.sort_values(by='dateid_serial', ignore_index = True)
-df_avg = df_avg.iloc[364:].reset_index()
+X_train, X_test, y_train, y_test = get_ml_test_train('pm10')
 
+X, y, X_pred, y_dates = get_ml_X_y_X_pred('pm10')
 
-X_cols = [
-    'traffic_volume', 'precipitation', 'wind_speed','air_temperature',
-    'traffic_volume_lag_1', 'precipitation_lag_1', 'wind_speed_lag_1',
-    'air_temperature_lag_1', 'pm2_5_lag_1', 'pm10_lag_1', 'nox_lag_1',
-    'no2_lag_1', 'no_lag_1', 'traffic_volume_lag_2', 'precipitation_lag_2',
-    'wind_speed_lag_2', 'air_temperature_lag_2', 'pm2_5_lag_2',
-    'pm10_lag_2', 'nox_lag_2', 'no2_lag_2', 'no_lag_2',
-    'traffic_volume_lag_3', 'precipitation_lag_3', 'wind_speed_lag_3',
-    'air_temperature_lag_3', 'pm2_5_lag_3', 'pm10_lag_3', 'nox_lag_3',
-    'no2_lag_3', 'no_lag_3', 'traffic_volume_lag_6', 'precipitation_lag_6',
-    'wind_speed_lag_6', 'air_temperature_lag_6', 'pm2_5_lag_6',
-    'pm10_lag_6', 'nox_lag_6', 'no2_lag_6', 'no_lag_6',
-    'traffic_volume_lag_12', 'precipitation_lag_12', 'wind_speed_lag_12',
-    'air_temperature_lag_12', 'pm2_5_lag_12', 'pm10_lag_12', 'nox_lag_12',
-    'no2_lag_12', 'no_lag_12'
-]
-
-y_col = ['pm10']
-
-# Imputing values
-imputer_X = KNNImputer(n_neighbors = 5)
-imputer_X.fit(df_avg[X_cols])
-df_avg[X_cols] = imputer_X.transform(df_avg[X_cols])
-
-imputer_y = KNNImputer(n_neighbors = 5)
-imputer_y.fit(df_avg[y_col])
-df_avg[y_col] = imputer_y.transform(df_avg[y_col])
-
-# StandardScaling for df_avg
-s_scaler = StandardScaler()
-s_scaler.fit(df_avg[X_cols])
-df_avg[X_cols] = s_scaler.transform(df_avg[X_cols])
-
-# Splitting into train and test, X and y
-df_avg_test = df_avg.iloc[:365]
-df_avg_train = df_avg.iloc[365:]
-
-X_train = np.c_[df_avg_train[X_cols]]
-X_test = np.c_[df_avg_test[X_cols]]
-
-y_train = np.c_[df_avg_train[y_col]]
-y_test = np.c_[df_avg_test[y_col]]
 # Multivariate
 
 def multivariate_regressor(X_train, y_train, X_test, y_test):
@@ -89,7 +47,11 @@ def multivariate_regressor(X_train, y_train, X_test, y_test):
     mse_test = np.sqrt(mean_squared_error(y_pred, y_test))
     mae_test = mean_absolute_error(y_pred, y_test)
 
-    corr_matrix = df_avg_train.corr()
+    y_mean = np.mean(y_test)*np.ones(y_test.shape)
+    print('Dumb MSE:')
+    print(np.sqrt(mean_squared_error(y_mean, y_test)))
+    print('Dumb MAE:')
+    print(mean_absolute_error(y_mean, y_test))
     
     print(f'''
     Test MSE = {mse_test}
@@ -100,7 +62,6 @@ def multivariate_regressor(X_train, y_train, X_test, y_test):
     {corr_matrix}
           ''')
           
-multivariate_regressor(X_train, y_train, X_test, y_test)
 
 # K Nearest Neighbor
 def kneighborsregressor(X_train, y_train, X_test, y_test):    
@@ -121,7 +82,11 @@ def kneighborsregressor(X_train, y_train, X_test, y_test):
     mse_test = np.sqrt(mean_squared_error(y_pred, y_test))
     mae_test = mean_absolute_error(y_pred, y_test)
     
-    corr_matrix = df_avg_train.corr()
+    y_mean = np.mean(y_test)*np.ones(y_test.shape)
+    print('Dumb MSE:')
+    print(np.sqrt(mean_squared_error(y_mean, y_test)))
+    print('Dumb MAE:')
+    print(mean_absolute_error(y_mean, y_test))
     
     print(f'''
     Test MSE = {mse_test}
@@ -132,7 +97,6 @@ def kneighborsregressor(X_train, y_train, X_test, y_test):
     {corr_matrix}
           ''')
           
-kneighborsregressor(X_train, y_train, X_test, y_test)
 
 # XGBoost
 
@@ -158,11 +122,34 @@ def xgb_regressor(X_train, y_train, X_test, y_test):
     mse_test = np.sqrt(mean_squared_error(y_pred, y_test))
     mae_test = mean_absolute_error(y_pred, y_test)
     
+    y_mean = np.mean(y_test)*np.ones(y_test.shape)
+    print('Dumb MSE:')
+    print(np.sqrt(mean_squared_error(y_mean, y_test)))
+    print('Dumb MAE:')
+    print(mean_absolute_error(y_mean, y_test))
+    
     print(f'''
     Test MSE = {mse_test}
     Train MSE = {mse_train}
     Test MAE = {mae_test}
     Train MAE = {mae_train}
             ''')
+            
+xgb_regressor(X_train, y_train, X_test, y_test)      
 
-xgb_regressor(X_train, y_train, X_test, y_test)
+
+def xgb_predictor(X, y, X_pred, y_dates):
+    xgbr_model = xgb.XGBRegressor(max_depth = 2, learning_rate=0.05, n_estimators = 800, verbosity = 0)
+    xgbr_model.fit(X, y)
+    
+    print('R Squared for training data:')
+    print(xgbr_model.score(X, y))
+
+    
+    y_pred = xgbr_model.predict(X_pred)
+    # y_pred = y_pred.flatten()
+    prediction = np.vstack([y_dates.flatten() ,y_pred]).transpose()
+    
+    return prediction
+
+prediction = xgb_predictor(X, y, X_pred, y_dates)

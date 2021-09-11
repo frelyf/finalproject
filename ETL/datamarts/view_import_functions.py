@@ -22,13 +22,13 @@ def get_df_with_lags():
     engine = get_connection()
     
     #Queries
+    avg_query = """select * from avg_values_per_date"""
     month_lag_query = """select * from avg_values_month_lag"""
     bi_month_lag_query = """select * from avg_values_bi_month_lag"""
     qrt_year_lag_query = """select * from avg_values_qrt_year_lag"""
     half_year_lag_query = """select * from avg_values_half_year_lag"""
     year_lag_query = """select * from avg_values_year_lag"""
-    avg_query = """select * from avg_values_per_date"""
-    
+
     # Import dataframes
     df = pd.read_sql_query(avg_query, con = engine)
     df_month_lag = pd.read_sql_query(month_lag_query, con = engine)
@@ -65,6 +65,8 @@ def get_df_with_lags():
     
     #Return df
     return df
+
+df = get_df_with_lags()
 
 
 def get_df_with_lags_per_area(coordinate):    
@@ -117,13 +119,13 @@ def get_df_with_lags_per_area(coordinate):
 
 def get_df_prediction_test():
     engine = get_connection()
-
+    
     query = 'select * from prediction_test'
-    month_lag_query = 'select * from avg_values_month_lag'
-    bi_month_lag_query = """select * from avg_values_month_lag"""
-    qrt_year_lag_query = """select * from avg_values_bi_month_lag"""
-    half_year_lag_query = """select * from avg_values_7_month_lag"""
-    year_lag_query = """select * from avg_values_13_month_lag"""
+    month_lag_query = """select * from avg_values_month_lag"""
+    bi_month_lag_query = """select * from avg_values_bi_month_lag"""
+    qrt_year_lag_query = """select * from avg_values_qrt_year_lag"""
+    half_year_lag_query = """select * from avg_values_half_year_lag"""
+    year_lag_query = """select * from avg_values_year_lag"""
     
     # Import dataframes
     df = pd.read_sql_query(query, con = engine)
@@ -134,18 +136,21 @@ def get_df_prediction_test():
     df_yearlag = pd.read_sql_query(year_lag_query, con = engine)
     
     # Remove dateid_serial from lags and rename to dateid_serial for merging
+    del df_month_lag['dateid_serial']
     del df_bi_month_lag['dateid_serial']
     del df_qrt_year_lag['dateid_serial']
     del df_half_year_lag['dateid_serial']
     del df_yearlag['dateid_serial']
     
-    df_bi_month_lag['dateid_serial'] = df_bi_month_lag['month_lag']
-    df_qrt_year_lag['dateid_serial'] = df_qrt_year_lag['bi_month_lag']
+    df_month_lag['dateid_serial'] = df_month_lag['month_lag']
+    df_bi_month_lag['dateid_serial'] = df_bi_month_lag['bi_month_lag']
+    df_qrt_year_lag['dateid_serial'] = df_qrt_year_lag['qrt_year_lag']
     df_half_year_lag['dateid_serial'] = df_half_year_lag['half_year_lag']
     df_yearlag['dateid_serial'] = df_yearlag['year_lag']
     
-    del df_bi_month_lag['month_lag']
-    del df_qrt_year_lag['bi_month_lag']
+    del df_month_lag['month_lag']
+    del df_bi_month_lag['bi_month_lag']
+    del df_qrt_year_lag['qrt_year_lag']
     del df_half_year_lag['half_year_lag']
     del df_yearlag['year_lag']
     
@@ -158,4 +163,3 @@ def get_df_prediction_test():
     
     return df
 
-df_test = get_df_prediction_test()

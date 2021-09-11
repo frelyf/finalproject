@@ -23,7 +23,7 @@ from tensorflow.keras import regularizers
 import matplotlib.pyplot as plt
 
 from etl.datamarts.view_import_functions import get_df_simple, get_df_with_lags, get_df_with_lags_per_area
-from analysis.data_prep import get_dnn_test_train
+from analysis.data_prep import get_dnn_test_train, get_dnn_X_y_X_pred
 
 # DNN
 
@@ -48,13 +48,19 @@ history = model.fit(
     epochs=2000,
     validation_data = (X_test, y_test))
 
-
-def plot():
+def results():
+    y_mean = np.mean(y_test)*np.ones(y_train.shape)
+    dumb_mse = np.sqrt(mean_squared_error(y_mean, y_train))
+    print(f'Dumb MSE: {dumb_mse}')
+    dumb_mae = mean_absolute_error(y_mean, y_train)
+    print(f'Dumb MAE: {dumb_mae}')
     plt.plot(np.sqrt(history.history['loss']))
     plt.plot(np.sqrt(history.history['val_loss']))
+    plt.plot(dumb_mse*np.ones(y_train.shape))
     plt.plot(history.history['mae'], label = 'mae')
     plt.plot(history.history['val_mae'], label = 'val_mae')
-    plt.legend(['mae','val_mae', 'loss','val_loss'])
+    plt.plot(dumb_mae*np.ones(y_train.shape))
+    plt.legend(['mse','val_mse', 'dumb_mse', 'mae','val_mae', 'dumb_mae'])
     plt.show()
 
-plot()
+results()
