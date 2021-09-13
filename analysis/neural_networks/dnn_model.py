@@ -61,7 +61,7 @@ history = model.fit(
     X_train, 
     y_train, 
     batch_size=640, 
-    epochs=5000,
+    epochs=10000,
     validation_data = (X_test, y_test))
 
 def results():
