@@ -30,22 +30,38 @@ from analysis.data_prep import get_dnn_test_train, get_dnn_X_y_X_pred
 X_train, X_test, y_train, y_test = get_dnn_test_train()
 
 input_layer = Input(shape = (49,))
-normlization_layer = BatchNormalization()(input_layer)
-second_hidden_layer = Dense(128, activation = 'relu')(normlization_layer)
-first_dropout_layer = Dropout(0.2)(second_hidden_layer)
-third_hidden_layer = Dense(64, activation = 'relu')(first_dropout_layer)
-first_regularization_layer = Dense(32)(third_hidden_layer)
-second_dropout_layer = Dropout(0.2)(first_regularization_layer)
-fourth_hidden_layer = Dense(16, activation = 'relu')(second_dropout_layer)
-output_layer = Dense(5)(fourth_hidden_layer)
+second_hidden_layer = Dense(98, activation = 'relu')(input_layer)
+third_hidden_layer = Dense(64, activation = 'relu')(second_hidden_layer)
+first_regularization_layer = Dense(128, bias_regularizer=regularizers.l2(l2=120), #140 #120
+                                   kernel_regularizer=regularizers.L1(l1=19), 
+                                   activity_regularizer=regularizers.l1_l2(l1=190, l2=190))(third_hidden_layer)
+fourth_hidden_layer = Dense(78, activation = 'relu')(first_regularization_layer)
+fifht_hidden_layer = Dense(38, activation = 'relu')(fourth_hidden_layer)
+sixth_hidden_layer = Dense(12, activation = 'relu')(fifht_hidden_layer)
+output_layer = Dense(5,)(sixth_hidden_layer)
 
-model = Model(inputs = input_layer, outputs = output_layer)
+second_hidden_layer2 = Dense(300, activation='relu')(input_layer)
+first_dropout_layer2 = Dropout(0.5)(second_hidden_layer2)
+third_hidden_layer2 = Dense(200, activation = 'relu')(first_dropout_layer2)
+second_dropout_layer2 = Dropout(0.4)(third_hidden_layer2)
+fourth_hidden_layer2 = Dense(78, activation = 'relu')(second_dropout_layer2)
+fifht_hidden_layer2 = Dense(38, activation = 'relu')(fourth_hidden_layer2)
+output_layer2 = Dense(5,)(fifht_hidden_layer2)
+
+output_layer3 = Concatenate(axis=-1)([output_layer, output_layer2])
+#output_final = Dense(5)(output_layer3)
+
+first_combined_layer = Dense(64, activation = 'relu')(output_layer3)
+second_combined_layer = Dense(20, activation = 'relu')(first_combined_layer)
+combined_output_layer = Dense(5,)(second_combined_layer)
+
+model = Model(inputs = input_layer, outputs = combined_output_layer)
 model.compile(optimizer = 'adam', loss = 'mse', metrics = ['mae'])
 history = model.fit(
     X_train, 
     y_train, 
-    batch_size=256, 
-    epochs=2000,
+    batch_size=640, 
+    epochs=5000,
     validation_data = (X_test, y_test))
 
 def results():
