@@ -1,5 +1,8 @@
 import psycopg2
 import pandas as pd
+import datetime as dt
+import math
+import numpy as np
 
 def get_connection():
     connection = psycopg2.connect(
@@ -163,3 +166,24 @@ def get_df_prediction_test():
     
     return df
 
+def get_dates():
+    engine = get_connection()
+    query = 'select dateid_serial, date_actual, year_actual from dim_date;'
+    df = pd.read_sql_query(query, con = engine)
+    
+    def create_new_year(int):
+        year = str(int)
+        year = f'{year}-01-01'
+        return year
+        
+    year = dt.timedelta(days=365)
+    df['year_actual'] = df['year_actual'].apply(create_new_year)
+    df['year_actual'] = pd.to_datetime(df['year_actual'])
+    df['date_actual'] = pd.to_datetime(df['date_actual'])
+    df['seconds'] = ((df['date_actual'] - df['year_actual'])/year)*2*math.pi
+    
+    df['sin'] = np.sin(df['seconds'])
+    df['cos'] = np.cos(df['seconds'])
+    df = df.drop(['date_actual','year_actual','seconds'], axis = 1)
+    
+    return df
