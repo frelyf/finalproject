@@ -46,7 +46,6 @@ def get_dnn_test_train():
     
     df_dates = get_dates()
     df = df.merge(df_dates, how = 'left', on = 'dateid_serial')
-    df_pred = df_pred.merge(df_dates, how = 'left', on = 'dateid_serial')
     
     X_cols.extend(['sin','cos'])
 
@@ -162,7 +161,6 @@ def get_ml_test_train(value):
     
     df_dates = get_dates()
     df = df.merge(df_dates, how = 'left', on = 'dateid_serial')
-    df_pred = df_pred.merge(df_dates, how = 'left', on = 'dateid_serial')
     
     X_cols.extend(['sin','cos'])
 
