@@ -69,8 +69,6 @@ def get_df_with_lags():
     #Return df
     return df
 
-df = get_df_with_lags()
-
 
 def get_df_with_lags_per_area(coordinate):    
     engine = get_connection()
@@ -111,14 +109,23 @@ def get_df_with_lags_per_area(coordinate):
     del df_yearlag['month_lag']
     
     # Merge lags
-    df = df.merge(df_month_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
-    df = df.merge(df_bi_month_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
-    df = df.merge(df_qrt_year_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
-    df = df.merge(df_half_year_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
-    df = df.merge(df_yearlag, how = 'left', on=['dateid_serial', 'traffic_geo'])
+    if 'traffic_geo' in df.columns:
+        df = df.merge(df_month_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
+        df = df.merge(df_bi_month_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
+        df = df.merge(df_qrt_year_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
+        df = df.merge(df_half_year_lag, how = 'left', on=['dateid_serial', 'traffic_geo'])
+        df = df.merge(df_yearlag, how = 'left', on=['dateid_serial', 'traffic_geo'])
+    else:
+        df = df.merge(df_month_lag, how = 'left', on=['dateid_serial', 'traffic_geo_lat','traffic_geo_lon'])
+        df = df.merge(df_bi_month_lag, how = 'left', on=['dateid_serial', 'traffic_geo_lat','traffic_geo_lon'])
+        df = df.merge(df_qrt_year_lag, how = 'left', on=['dateid_serial', 'traffic_geo_lat','traffic_geo_lon'])
+        df = df.merge(df_half_year_lag, how = 'left', on=['dateid_serial', 'traffic_geo_lat','traffic_geo_lon'])
+        df = df.merge(df_yearlag, how = 'left', on=['dateid_serial', 'traffic_geo_lat','traffic_geo_lon'])
 
     #Return df
     return df
+
+df = get_df_with_lags_per_area('latitude_and_longitude')
 
 def get_df_prediction_test():
     engine = get_connection()
