@@ -27,9 +27,9 @@ from analysis.data_prep import get_dnn_test_train, get_dnn_X_y_X_pred
 
 # DNN
 
-X_train, X_test, y_train, y_test = get_dnn_test_train()
+X_train, X_test, y_train, y_test = get_dnn_test_train('weather and traffic', True, True)
 
-input_layer = Input(shape = (49,))
+input_layer = Input(shape = (52,))
 second_hidden_layer = Dense(98, activation = 'relu')(input_layer)
 third_hidden_layer = Dense(64, activation = 'relu')(second_hidden_layer)
 first_regularization_layer = Dense(128, bias_regularizer=regularizers.l2(l2=120), #140 #120

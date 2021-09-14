@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, OneHotEncoder
 from etl.datamarts.view_import_functions import get_df_prediction_test, get_df_simple, get_df_with_lags, get_df_with_lags_per_area, get_dates
 
 
-def get_dnn_test_train(latitude_category = False, longitude_category = False):
+def get_dnn_test_train(basis = None, latitude_category = False, longitude_category = False):
     if latitude_category == False and longitude_category == False:
         df = get_df_with_lags()
     
@@ -53,7 +53,8 @@ def get_dnn_test_train(latitude_category = False, longitude_category = False):
     X_cols = [
         'traffic_volume_lag_1', 'precipitation_lag_1',
         'air_temperature_lag_1', 'pm2_5_lag_1', 'pm10_lag_1', 'nox_lag_1',
-        'no2_lag_1', 'no_lag_1', 'traffic_volume_lag_2', 'precipitation_lag_2', 'air_temperature_lag_2', 'pm2_5_lag_2',
+        'no2_lag_1', 'no_lag_1', 'traffic_volume_lag_2', 'precipitation_lag_2', 
+        'air_temperature_lag_2', 'pm2_5_lag_2',
         'pm10_lag_2', 'nox_lag_2', 'no2_lag_2', 'no_lag_2',
         'traffic_volume_lag_3', 'precipitation_lag_3',
         'air_temperature_lag_3', 'pm2_5_lag_3', 'pm10_lag_3', 'nox_lag_3',
@@ -95,10 +96,38 @@ def get_dnn_test_train(latitude_category = False, longitude_category = False):
     df_dates = get_dates()
     df = df.merge(df_dates, how = 'left', on = 'dateid_serial')
     
-    X_cols = df.columns.difference([
-        'dateid_serial', 'traffic_volume', 'precipitation', 'wind_speed',
-        'air_temperature', 'pm2_5', 'pm10', 'nox', 'no2', 'no'])
+    # Setting X columns based on what to train on
+    if basis == None:
+        X_cols = df.columns.difference([
+            'dateid_serial', 'traffic_volume', 'precipitation', 'wind_speed',
+            'air_temperature', 'pm2_5', 'pm10', 'nox', 'no2', 'no'])
+    
+    if basis == 'traffic':
+        X_cols = [
+            'traffic_volume_lag_1', 'traffic_volume_lag_2','traffic_volume_lag_3',
+            'traffic_volume_lag_3', 'traffic_volume_lag_6', 'traffic_volume_lag_12',
+            'sin','cos','north','south','east','center','west']
 
+    if basis == 'weather':
+        X_cols = [
+            'precipitation_lag_1', 'air_temperature_lag_1', 'wind_speed_lag_1',
+            'precipitation_lag_2', 'air_temperature_lag_2', 'wind_speed_lag_2',
+            'precipitation_lag_3', 'air_temperature_lag_3', 'wind_speed_lag_3',
+            'precipitation_lag_6', 'air_temperature_lag_6', 'wind_speed_lag_6',
+            'precipitation_lag_12', 'air_temperature_lag_12', 'wind_speed_lag_12',
+            'sin','cos','north','south','east','center','west']
+    if basis == 'weather and traffic':
+        X_cols = [
+            'traffic_volume_lag_1', 'traffic_volume_lag_2','traffic_volume_lag_3',
+            'traffic_volume_lag_3', 'traffic_volume_lag_6', 'traffic_volume_lag_12',
+            'precipitation_lag_1', 'air_temperature_lag_1', 'wind_speed_lag_1',
+            'precipitation_lag_2', 'air_temperature_lag_2', 'wind_speed_lag_2',
+            'precipitation_lag_3', 'air_temperature_lag_3', 'wind_speed_lag_3',
+            'precipitation_lag_6', 'air_temperature_lag_6', 'wind_speed_lag_6',
+            'precipitation_lag_12', 'air_temperature_lag_12', 'wind_speed_lag_12',
+            'sin','cos','north','south','east','center','west']
+
+    
     # Splitting into train and test, X and y
     df_avg_test = df.loc[df['dateid_serial'] >= 20210101]
     df_avg_train = df.loc[df['dateid_serial'] < 20210101]
@@ -111,7 +140,6 @@ def get_dnn_test_train(latitude_category = False, longitude_category = False):
 
     return X_train, X_test, y_train, y_test
 
-X_train, X_test, y_train, y_test = get_dnn_test_train(True, True)
  
 def get_dnn_X_y_X_pred():
 # Prepping X and y
