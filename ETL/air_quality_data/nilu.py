@@ -81,7 +81,7 @@ def python_table(create_table_query):
 #python_table('facts_air_quality (air_quality_facts_id serial primary key, sk_date int references dim_date (dateid_serial), sk_air_quality int references dim_air_quality (sk_air_quality), PM2_5 float, PM10 float, NOx float, NO2 float, NO float)')
 
 def insert_p_t_dim():
-    data = oslo_stations_info
+    data = oslo_stations()
     conn = get_connection()
     with conn as connection:
         cursor = connection.cursor()
