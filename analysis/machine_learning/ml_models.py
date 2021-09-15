@@ -23,11 +23,7 @@ from tensorflow.keras import regularizers
 import matplotlib.pyplot as plt
 
 from etl.datamarts.view_import_functions import get_df_simple, get_df_with_lags, get_df_with_lags_per_area
-from analysis.data_prep import get_dnn_test_train, get_dnn_X_y_X_pred, get_ml_test_train, get_ml_X_y_X_pred
-
-X_train, X_test, y_train, y_test = get_ml_test_train('pm10')
-
-X, y, X_pred, y_dates = get_ml_X_y_X_pred('pm10')
+from analysis.data_prep import get_dnn_test_train, get_ml_test_train
 
 # Multivariate
 
@@ -58,8 +54,6 @@ def multivariate_regressor(X_train, y_train, X_test, y_test):
     Train MSE = {mse_train}
     Test MAE = {mae_test}
     Train MAE = {mae_train}
-    Correlation matrix:
-    {corr_matrix}
           ''')
           
 
@@ -94,11 +88,11 @@ def kneighborsregressor(X_train, y_train, X_test, y_test):
     Test MAE = {mae_test}
     Train MAE = {mae_train}
     Correlation matrix:
-    {corr_matrix}
           ''')
           
 
 # XGBoost
+X_train, X_test, y_train, y_test = get_ml_test_train(value = 'pm2_5', basis = None, latitude_category = False, longitude_category = False)
 
 def xgb_regressor(X_train, y_train, X_test, y_test):
     xgbr_model = xgb.XGBRegressor()
@@ -108,10 +102,10 @@ def xgb_regressor(X_train, y_train, X_test, y_test):
         )
     xgbr_model.fit(X_train, y_train, **fit_params)
     
-    print('R Squared for training data:')
-    print(xgbr_model.score(X_train, y_train))
-    print('R Squared for test data:')
-    print(xgbr_model.score(X_test, y_test))
+    r_sqrt_train = xgbr_model.score(X_train, y_train)
+    print(f'R Squared for training data: {r_sqrt_train}')
+    r_sqrt_test = xgbr_model.score(X_test, y_test)
+    print(f'R Squared for test data: {r_sqrt_train}')
     
     y_pred = xgbr_model.predict(X_test)
     y_pred_train = xgbr_model.predict(X_train)
@@ -134,9 +128,19 @@ def xgb_regressor(X_train, y_train, X_test, y_test):
     Test MAE = {mae_test}
     Train MAE = {mae_train}
             ''')
-            
-xgb_regressor(X_train, y_train, X_test, y_test)      
-
+    
+    feature_importance = xgbr_model.get_booster().get_score(importance_type="gain")
+    
+    stats = {
+        'r squared train': r_sqrt_train,
+        'r squared test': r_sqrt_test,
+        'mse_train': mse_train,
+        'mae_train': mae_train,
+        'mse_test': mse_test,
+        'mae_test': mae_test,
+    }
+    
+    return y_pred, stats, feature_importance
 
 def xgb_predictor(X, y, X_pred, y_dates):
     xgbr_model = xgb.XGBRegressor(max_depth = 2, learning_rate=0.05, n_estimators = 800, verbosity = 0)
@@ -151,5 +155,3 @@ def xgb_predictor(X, y, X_pred, y_dates):
     prediction = np.vstack([y_dates.flatten() ,y_pred]).transpose()
     
     return prediction
-
-prediction = xgb_predictor(X, y, X_pred, y_dates)

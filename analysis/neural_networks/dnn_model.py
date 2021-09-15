@@ -27,6 +27,10 @@ from analysis.data_prep import get_dnn_test_train, get_dnn_X_y_X_pred
 
 # DNN
 
+# Parameters for basis are None, 'weather', 'traffic','weather and traffic'
+# Latitude True or False
+# Longitude True or False
+
 X_train, X_test, y_train, y_test = get_dnn_test_train('weather and traffic', True, True)
 
 input_layer = Input(shape = (52,))
