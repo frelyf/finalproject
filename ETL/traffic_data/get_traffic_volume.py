@@ -1,13 +1,15 @@
- import requests
+import requests
 import pandas as pd
 import os
 from itertools import product
 import psycopg2
 import numpy as np
 import time
+import datetime
+from datetime import date
 
 
-reg_points = pd.read_csv(r'C:\Users\Fredrik Lyford\Documents\GitHub\finalproject\files\registration_points.csv')
+reg_points = pd.read_csv(r'C:\Users\Inger Lise\Documents\Luft og trafikk\files\registration_points.csv')
 
 def get_traffic_data(start_date, end_date):
     data_list = []
@@ -158,4 +160,26 @@ with connection.cursor() as traffic_cursor:
         print(index)
     connection.commit()
 
+def update_facts_table_traffic():
+    to_date = (date.today()-datetime.timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%S+00:00')
+    connection = get_connection()
+    
+    with connection.cursor() as traffic_cursor:
+        traffic_cursor.execute('select max(sk_date) from facts_traffic')
+        last_date_tuple = traffic_cursor.fetchone()
+        for last_date in last_date_tuple:
+            from_date = pd.to_datetime(str(last_date),format='%Y%m%d')
+        from_date_plus = (datetime.datetime.strptime(str(from_date), '%Y-%m-%d %H:%M:%S')+datetime.timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%S+00:00')
+    
+    df_update = get_traffic_data(from_date_plus, to_date)
+    
+    with connection.cursor() as traffic_cursor:
+        for index, row in df_update.iterrows():
+            traffic_cursor.execute(
+        """
+        insert into facts_traffic (sk_date, sk_traffic_reg, volume, coverage)
+        values (%s, %s, %s, %s)
+        """, (row['date'], row['reg_points'], row['volume'], row['coverage']))
+        connection.commit()
 
+update_facts_table_traffic()
