@@ -5,6 +5,8 @@ from sklearn.preprocessing import StandardScaler
 import json
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.stats import 
+
 
 
 
@@ -88,6 +90,7 @@ json_dict = {
 #     json.dump(json_dict, outfile)
 
 
+# Creating dataframes with predictions and list of dataframes
 df_pred_all = pd.DataFrame(y_pred_basis_dict[None])
 df_pred_wt = pd.DataFrame(y_pred_basis_dict['weather and traffic']) 
 df_pred_w= pd.DataFrame(y_pred_basis_dict['weather'])
@@ -97,7 +100,7 @@ df_pred_t= pd.DataFrame(y_pred_basis_dict['traffic'])
 df_list = [df_pred_all, df_pred_wt, df_pred_w, df_pred_t]
 
 
-
+# Plotting models against each other
 def plot_all():
     for value in values:
         for df in df_list:
@@ -109,17 +112,17 @@ def plot_true_and_pred():
     basis_list = ["All features", 'weather and traffic', 'weather', 'true','traffic']
     for basis, df in zip(basis_list,df_list):
         plt.cla()
-        plt.scatter(df_pred_true['nox'], df['nox'])
+        plt.scatter(df_true['nox'], df['nox'])
         plt.ylabel('True')
         plt.xlabel(basis)
         
-        x = [i for i in range(int(df_pred_true.max().max()))]
-        y = [i for i in range(int(df_pred_true.max().max()))]
+        x = [i for i in range(int(df_true.max().max()))]
+        y = [i for i in range(int(df_true.max().max()))]
     
         plt.plot(x,y, '--', color = '#1C2833')
         plt.savefig(f'files\plots\{basis}')
         
-
+# Scaling predictions for comparison
 df_scaling = get_df_with_lags()[['pm2_5', 'pm10', 'no', 'no2', 'nox']]
 pred_scaler = StandardScaler()
 pred_scaler.fit(df_scaling)
@@ -145,6 +148,7 @@ days = pd.date_range('2021-01-01', periods = 28, freq = '10d').to_frame(name = '
 errors_smooth = pd.concat([errors_smooth, days], axis = 1).set_index('date', drop = True)
 errors_smooth.plot()
 
+# Finding worst and best days for each model
 m_min = errors.eq(errors.min(axis=1), 0)
 min_error = m_min.dot(errors.columns + ',').str.rstrip(',').value_counts()
 min_error = min_error.apply(lambda x: 100 * x / float(min_error.sum()))
@@ -152,3 +156,5 @@ min_error = min_error.apply(lambda x: 100 * x / float(min_error.sum()))
 m_max = errors.eq(errors.max(axis=1), 0)
 max_error = m_max.dot(errors.columns + ',').str.rstrip(',').value_counts()
 max_error = max_error.apply(lambda x: 100 * x / float(max_error.sum()))
+
+
