@@ -142,6 +142,8 @@ def xgb_regressor(X_train, y_train, X_test, y_test):
     
     return y_pred, stats, feature_importance
 
+xgb_regressor(X_train, y_train, X_test, y_test)
+
 def xgb_predictor(X, y, X_pred, y_dates):
     xgbr_model = xgb.XGBRegressor(max_depth = 2, learning_rate=0.05, n_estimators = 800, verbosity = 0)
     xgbr_model.fit(X, y)

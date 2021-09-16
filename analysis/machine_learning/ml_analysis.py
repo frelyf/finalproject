@@ -5,6 +5,8 @@ from sklearn.preprocessing import StandardScaler
 import json
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.stats import wilcoxon
+from scipy.stats import mannwhitneyu
 
 df = get_df_with_lags()
 each = df.columns.difference([
@@ -119,6 +121,8 @@ def plot_true_and_pred():
         plt.savefig(f'files\plots\{basis}')
         
 # Scaling predictions for comparison
+
+
 df_scaling = get_df_with_lags()[['pm2_5', 'pm10', 'no', 'no2', 'nox']]
 pred_scaler = StandardScaler()
 pred_scaler.fit(df_scaling)
@@ -135,7 +139,6 @@ df_pred_w_error = df_true.subtract(df_pred_w).abs().sum(axis = 1).to_frame(name 
 df_pred_t_error = df_true.subtract(df_pred_t).abs().sum(axis = 1).to_frame(name = 'traffic')
 
 errors = pd.concat([df_pred_all_error, df_pred_wt_error, df_pred_w_error, df_pred_t_error], axis = 1)
-errors.plot()
 
 errors_smooth = errors.rolling(9).mean()
 errors_smooth = errors_smooth.iloc[::9, :].reset_index(drop = True)
@@ -152,3 +155,16 @@ min_error = min_error.apply(lambda x: 100 * x / float(min_error.sum()))
 m_max = errors.eq(errors.max(axis=1), 0)
 max_error = m_max.dot(errors.columns + ',').str.rstrip(',').value_counts()
 max_error = max_error.apply(lambda x: 100 * x / float(max_error.sum()))
+
+error_incidence = pd.concat([min_error, max_error], axis = 1)
+error_incidence.columns = ['min_error','max_error']
+
+
+# Statistical validation
+for value in values:
+    statistic, pvalue = wilcoxon(df_true[value], df_pred_t[value])
+    if pvalue > 0.1:
+        test = 'passed'
+    else:
+        test = 'failed'
+    print(f'Model {test} for {value}')

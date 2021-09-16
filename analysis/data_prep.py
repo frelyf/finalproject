@@ -291,7 +291,6 @@ def get_dnn_X_y_X_pred(basis = None, latitude_category = False, longitude_catego
     # Return prediction items
     return X, y, X_pred, y_dates
 
-X, y, X_pred, y_dates = get_dnn_X_y_X_pred(basis = None, latitude_category = True, longitude_category = True)
 
 def get_ml_test_train(value, basis = None, latitude_category = False, longitude_category = False):
     if latitude_category == False and longitude_category == False:
