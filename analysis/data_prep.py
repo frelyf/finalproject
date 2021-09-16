@@ -286,7 +286,7 @@ def get_dnn_X_y_X_pred(basis = None, latitude_category = False, longitude_catego
     
     # Prepping X_pred and y_dates
     X_pred = np.c_[df_pred[X_cols]]
-    y_dates = np.c_[df_pred['dateid_serial']]
+    y_dates = np.c_[df_pred['dateid_serial', 'north','south','east','center','west']]
     
     # Return prediction items
     return X, y, X_pred, y_dates

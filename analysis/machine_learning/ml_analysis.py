@@ -5,10 +5,6 @@ from sklearn.preprocessing import StandardScaler
 import json
 import matplotlib.pyplot as plt
 import pandas as pd
-from scipy.stats import 
-
-
-
 
 df = get_df_with_lags()
 each = df.columns.difference([
@@ -156,5 +152,3 @@ min_error = min_error.apply(lambda x: 100 * x / float(min_error.sum()))
 m_max = errors.eq(errors.max(axis=1), 0)
 max_error = m_max.dot(errors.columns + ',').str.rstrip(',').value_counts()
 max_error = max_error.apply(lambda x: 100 * x / float(max_error.sum()))
-
-
