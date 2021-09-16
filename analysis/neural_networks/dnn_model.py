@@ -101,3 +101,11 @@ fd.to_sql('october_predicted', engine)
 
 
 #(name= ['pm10', '¨pm2_5', 'no', 'no2', 'dateid_serial', 'north','south','east','center','west'])
+
+#to get tomorrows prediction:
+# select avg(pm10), avg(pm2_5), avg("no"), avg(no2), avg(nox)
+# from october_predicted
+# where dateid_serial = 20210917
+
+
+fd_north_center = if fd['north'] == 1 and fd['center '] == 1
