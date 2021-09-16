@@ -31,13 +31,16 @@ from analysis.data_prep import get_dnn_test_train, get_dnn_X_y_X_pred
 # Latitude True or False
 # Longitude True or False
 
-X_train, X_test, y_train, y_test = get_dnn_test_train('weather and traffic', True, True)
+X_train, X_test, y_train, y_test = get_dnn_test_train(None, True, True)
+
+X = np.concatenate((X_train, X_test), axis=0)
+y = np.concatenate((y_train, y_test), axis=0)
 
 input_layer = Input(shape = (52,))
 second_hidden_layer = Dense(98, activation = 'relu')(input_layer)
 third_hidden_layer = Dense(64, activation = 'relu')(second_hidden_layer)
 first_regularization_layer = Dense(128, bias_regularizer=regularizers.l2(l2=120), #140 #120
-                                   kernel_regularizer=regularizers.L1(l1=19), 
+                                   kernel_regularizer=regularizers.L1(l1=190), 
                                    activity_regularizer=regularizers.l1_l2(l1=190, l2=190))(third_hidden_layer)
 fourth_hidden_layer = Dense(78, activation = 'relu')(first_regularization_layer)
 fifht_hidden_layer = Dense(38, activation = 'relu')(fourth_hidden_layer)
@@ -55,18 +58,17 @@ output_layer2 = Dense(5,)(fifht_hidden_layer2)
 output_layer3 = Concatenate(axis=-1)([output_layer, output_layer2])
 #output_final = Dense(5)(output_layer3)
 
-first_combined_layer = Dense(64, activation = 'relu')(output_layer3)
-second_combined_layer = Dense(20, activation = 'relu')(first_combined_layer)
+first_combined_layer = Dense(25, activation = 'relu')(output_layer3)
+second_combined_layer = Dense(10, activation = 'relu')(first_combined_layer)
 combined_output_layer = Dense(5,)(second_combined_layer)
 
 model = Model(inputs = input_layer, outputs = combined_output_layer)
 model.compile(optimizer = 'adam', loss = 'mse', metrics = ['mae'])
 history = model.fit(
-    X_train, 
-    y_train, 
-    batch_size=640, 
-    epochs=10000,
-    validation_data = (X_test, y_test))
+    X, 
+    y, 
+    batch_size=320, 
+    epochs=1000)
 
 def results():
     y_mean = np.mean(y_test)*np.ones(y_train.shape)
@@ -84,3 +86,26 @@ def results():
     plt.show()
 
 results()
+
+
+X, y_pred_dates, X_pred, y_dates = get_dnn_X_y_X_pred(basis = None, latitude_category = True, longitude_category = True)
+
+y_pred = model.predict(X_pred)
+y_true = np.append(y_pred, y_dates, axis=1)
+fd = pd.DataFrame(y_true, columns=['pm10', 'pm2_5', 'no', 'no2', 'nox', 'dateid_serial', 'north','south','east','center','west'])
+
+from sqlalchemy import create_engine
+engine = create_engine('postgresql://postgres@trafikkluft:Awesome1337@trafikkluft.postgres.database.azure.com:5432/postgres')
+fd.to_sql('october_predicted', engine)
+
+
+
+#(name= ['pm10', '¨pm2_5', 'no', 'no2', 'dateid_serial', 'north','south','east','center','west'])
+
+#to get tomorrows prediction:
+# select avg(pm10), avg(pm2_5), avg("no"), avg(no2), avg(nox)
+# from october_predicted
+# where dateid_serial = 20210917
+
+
+fd_north_center = if fd['north'] == 1 and fd['center '] == 1
